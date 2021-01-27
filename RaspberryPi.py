@@ -58,8 +58,7 @@ Code to retrieve data from Firebase database API
 # api-endpoint
 urlPrefix = 'https://DATABASENAME-default-rtdb.REGION.firebasedatabase.app/quotes/'
 # get random int between first quote id to last for endpoint
-quoteIdInt = random.randint(1, 15)
-quoteStr = str(quoteIdInt)
+quoteStr = str(random.randint(1, 14))
 urlQuoteSuffix = '/quote.json'
 urlAuthorSuffix = '/author.json'
 urlCitySuffix = '/city.json'
@@ -73,9 +72,10 @@ quote = requests.get(url=quoteUrl)
 author = requests.get(url=authorUrl)
 city = requests.get(url=cityUrl)
 
-quoteData = quote.json()
-authorData = author.json()
-cityData = city.json()
+quoteData = str(quote.json())
+authorData = str(author.json())
+cityData = str(city.json())
+
 # print quote
 print('"'+quoteData + '"' + ' ~'+authorData + ' ('+cityData+')')
 quote = '"' + quoteData + '"'
