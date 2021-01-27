@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import argparse
-
 import inkyphat
 from PIL import Image, ImageFont, ImageDraw
 from font_hanken_grotesk import HankenGroteskBold, HankenGroteskMedium
@@ -25,7 +24,6 @@ except NotImplementedError:
     pass
 
 # Figure out scaling for display size
-
 scale_size = 1.0
 padding = 0
 
@@ -38,12 +36,10 @@ if inky_display.resolution == (600, 448):
     padding = 30
 
 # Create a new canvas to draw on
-
 img = Image.new("P", inky_display.resolution)
 draw = ImageDraw.Draw(img)
 
 # Load the fonts
-
 intuitive_font = ImageFont.truetype(Intuitive, int(22 * scale_size))
 hanken_medium_font_20 = ImageFont.truetype(
     HankenGroteskMedium, int(20 * scale_size))
@@ -58,8 +54,10 @@ Firebase
 Code to retrieve data from Firebase database API
 """
 
+# Reference: code written by Adam Bowie, as seen here: https://www.adambowie.com/blog/2019/09/news-twitter-feeds-and-inky-what-e-ink-display/
 
-def reflow_tweet(quote, width, font):
+
+def reflow_quote(quote, width, font):
     words = quote.split(" ")
     reflowed = ' '
     line_length = 0
@@ -101,11 +99,11 @@ authorData = str(author.json())
 cityData = str(city.json())
 
 # print quote
-print('"'+quoteData + '"' + ' ~'+authorData + ' ('+cityData+')')
+print('"' + quoteData + '"' + ' ~' + authorData + ' ('+cityData+')')
 quote = '"' + quoteData + '"'
 author = '~' + authorData
 
-quoter = reflow_tweet(quote, inky_display.WIDTH, font=intuitive_font)
+quoter = reflow_quote(quote, inky_display.WIDTH, font=intuitive_font)
 
 """
 Spotipy
@@ -134,7 +132,7 @@ try:
         'Artist:': artists
     })
     song, artist = str(body["item"]["name"]), str(artists)
-    
+
     nowPlaying = song + ' - ' + artist
     print(nowPlaying)
 
@@ -148,7 +146,7 @@ WeatherAPI
 Code to retrieve weather info for city
 """
 
-# api-endpoint
+# API endpoint
 weatherAPIEndpoint = 'http://api.weatherapi.com/v1/current.json?key=API_KEY&q=CITY'
 
 # sending get request and saving the response as response object
@@ -168,12 +166,10 @@ print(currentWeatherDegrees +
 weather = currentWeatherDegrees + 'C - ' + city + ', ' + country
 
 # Top and bottom y-coordinates for the white strip
-
 y_top = int(inky_display.height * (5.0 / 10.0))
 y_bottom = y_top + int(inky_display.height * (5.0 / 10.0))
 
 # Draw the red, white, and red strips
-
 for y in range(0, y_top):
     for x in range(0, inky_display.width):
         img.putpixel((x, y), inky_display.BLACK if inky_display.colour ==
@@ -189,7 +185,6 @@ for y in range(y_bottom, inky_display.height):
                      "black" else inky_display.WHITE)
 
 # Calculate the positioning and draw the quote text
-
 quote_w, quote_h = intuitive_font.getsize(str(quoter))
 quote_x = int((inky_display.width - quote_w) / 2)
 quote_y = 0 + padding
@@ -197,15 +192,13 @@ draw.text((0, quote_y), quoter,
           inky_display.BLACK, font=intuitive_font)
 
 # Calculate the positioning and draw the weather text
-
 author_w, author_h = intuitive_font.getsize(author)
 author_x = int((inky_display.width - author_w) / 2)
-author_y = quote_h + padding +20
+author_y = quote_h + padding + 20
 draw.text((author_x, author_y), author,
           inky_display.YELLOW, font=intuitive_font)
 
 # Calculate the positioning and draw the quote text
-
 spotify_w, spotify_h = hanken_medium_font.getsize(str(nowPlaying))
 spotify_x = int((inky_display.width - spotify_w) / 2)
 spotify_y = author_h + padding + 50
@@ -213,7 +206,6 @@ draw.text((spotify_x, spotify_y), str(nowPlaying),
           inky_display.BLACK, font=hanken_medium_font)
 
 # Calculate the positioning and draw the quote author text
-
 weather_w, weather_h = hanken_medium_font_20.getsize(str(weather))
 weather_x = int((inky_display.width - weather_w) / 2)
 weather_y = int(y_top + ((y_bottom - y_top - weather_h) / 2) + 20)
@@ -221,6 +213,5 @@ draw.text((weather_x, weather_y), weather,
           inky_display.BLACK, font=hanken_medium_font_20)
 
 # Display the completed name badge
-
 inky_display.set_image(img)
 inky_display.show()
