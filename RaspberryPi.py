@@ -14,15 +14,15 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
 try:
-	inky_display = auto(ask_user=True, verbose=True)
+    inky_display = auto(ask_user=True, verbose=True)
 except TypeError:
-	raise TypeError("You need to update the Inky library to >= v1.1.0")
+    raise TypeError("You need to update the Inky library to >= v1.1.0")
 
 # inky_display.set_rotation(180)
 try:
-	inky_display.set_border(inky_display.YELLOW)
+    inky_display.set_border(inky_display.YELLOW)
 except NotImplementedError:
-	pass
+    pass
 
 # Figure out scaling for display size
 
@@ -30,12 +30,12 @@ scale_size = 1.0
 padding = 0
 
 if inky_display.resolution == (400, 300):
-	scale_size = 2.20
-	padding = 15
+    scale_size = 2.20
+    padding = 15
 
 if inky_display.resolution == (600, 448):
-	scale_size = 2.20
-	padding = 30
+    scale_size = 2.20
+    padding = 30
 
 # Create a new canvas to draw on
 
@@ -45,9 +45,10 @@ draw = ImageDraw.Draw(img)
 # Load the fonts
 
 intuitive_font = ImageFont.truetype(Intuitive, int(22 * scale_size))
-hanken_medium_font_20 = ImageFont.truetype(HankenGroteskMedium, int(20 * scale_size))
+hanken_medium_font_20 = ImageFont.truetype(
+    HankenGroteskMedium, int(20 * scale_size))
 hanken_medium_font = ImageFont.truetype(
-	HankenGroteskMedium, int(22 * scale_size))
+    HankenGroteskMedium, int(22 * scale_size))
 
 # Grab the name to be displayed
 
@@ -56,6 +57,28 @@ Firebase
 
 Code to retrieve data from Firebase database API
 """
+
+
+def reflow_tweet(quote, width, font):
+    words = quote.split(" ")
+    reflowed = ' '
+    line_length = 0
+
+    for i in range(len(words)):
+        word = words[i] + " "
+        word_length = font.getsize(word)[0]
+        line_length += word_length
+
+        if line_length < width:
+            reflowed += word
+        else:
+            line_length = word_length
+            reflowed = reflowed[:-1] + "\n " + word
+
+    # reflowed = reflowed.rstrip() + '"'
+
+    return reflowed
+
 
 # api-endpoint
 urlPrefix = 'https://DATABASENAME-default-rtdb.REGION.firebasedatabase.app/quotes/'
@@ -84,6 +107,8 @@ print('"'+quoteData + '"' + ' ~'+authorData + ' ('+cityData+')')
 quote = '"' + quoteData + '"'
 author = '~' + authorData
 
+quoter = reflow_tweet(quote, inky_display.WIDTH, font=intuitive_font)
+
 """
 Spotipy
 
@@ -100,21 +125,21 @@ current_song = sp.currently_playing()
 
 # getting currently playing song on user account
 try:
-	body = json.loads(json.dumps(current_song))
-	artists = ""
-	for a in body["item"]["artists"]:
-		if artists != "":
-			artists += ", "
-		artists += a["name"]
-	print({
-		'Song:': body["item"]["name"],
-		'Artist:': artists
-	})
-	nowPlaying = str(body["item"]["name"]), str(artists)
+    body = json.loads(json.dumps(current_song))
+    artists = ""
+    for a in body["item"]["artists"]:
+        if artists != "":
+            artists += ", "
+        artists += a["name"]
+    print({
+        'Song:': body["item"]["name"],
+        'Artist:': artists
+    })
+    nowPlaying = str(body["item"]["name"]), str(artists)
 
 except:
-	print("Nothing is being played at the minute")
-	nowPlaying = 'Nothing Playing'
+    print("Nothing is being played at the minute")
+    nowPlaying = 'Nothing Playing'
 
 """
 WeatherAPI
@@ -137,7 +162,7 @@ currentWeatherDegrees = str(data['current']['temp_c'])
 currentWeatherInWords = data['current']['condition']['text']
 
 print(currentWeatherDegrees +
-	  'C - ' + currentWeatherInWords + ' - ' + city + ', ' + country)
+      'C - ' + currentWeatherInWords + ' - ' + city + ', ' + country)
 
 weather = currentWeatherDegrees + 'C - ' + city + ', ' + country
 
@@ -149,26 +174,26 @@ y_bottom = y_top + int(inky_display.height * (5.0 / 10.0))
 # Draw the red, white, and red strips
 
 for y in range(0, y_top):
-	for x in range(0, inky_display.width):
-		img.putpixel((x, y), inky_display.BLACK if inky_display.colour ==
-					 "black" else inky_display.WHITE)
+    for x in range(0, inky_display.width):
+        img.putpixel((x, y), inky_display.BLACK if inky_display.colour ==
+                     "black" else inky_display.WHITE)
 
 for y in range(y_top, y_bottom):
-	for x in range(0, inky_display.width):
-		img.putpixel((x, y), inky_display.WHITE)
+    for x in range(0, inky_display.width):
+        img.putpixel((x, y), inky_display.WHITE)
 
 for y in range(y_bottom, inky_display.height):
-	for x in range(0, inky_display.width):
-		img.putpixel((x, y), inky_display.BLACK if inky_display.colour ==
-					 "black" else inky_display.WHITE)
+    for x in range(0, inky_display.width):
+        img.putpixel((x, y), inky_display.BLACK if inky_display.colour ==
+                     "black" else inky_display.WHITE)
 
 # Calculate the positioning and draw the quote text
 
-quote_w, quote_h = intuitive_font.getsize(str(quote))
+quote_w, quote_h = intuitive_font.getsize(str(quoter))
 quote_x = int((inky_display.width - quote_w) / 2)
 quote_y = 0 + padding
-draw.text((quote_x, quote_y), quote,
-		  inky_display.BLACK, font=intuitive_font)
+draw.text((quote_x, quote_y), quoter,
+          inky_display.BLACK, font=intuitive_font)
 
 # Calculate the positioning and draw the weather text
 
@@ -176,14 +201,15 @@ author_w, author_h = intuitive_font.getsize(author)
 author_x = int((inky_display.width - author_w) / 2)
 author_y = quote_h + padding
 draw.text((author_x, author_y), author,
-		  inky_display.YELLOW, font=intuitive_font)
+          inky_display.YELLOW, font=intuitive_font)
 
 # Calculate the positioning and draw the quote text
 
 spotify_w, spotify_h = hanken_medium_font.getsize(str(nowPlaying))
 spotify_x = int((inky_display.width - spotify_w) / 2)
 spotify_y = author_h + padding + 50
-draw.text((spotify_x,spotify_y), str(nowPlaying), inky_display.BLACK, font=hanken_medium_font)
+draw.text((spotify_x, spotify_y), str(nowPlaying),
+          inky_display.BLACK, font=hanken_medium_font)
 
 # Calculate the positioning and draw the quote author text
 
@@ -191,7 +217,7 @@ weather_w, weather_h = hanken_medium_font_20.getsize(str(weather))
 weather_x = int((inky_display.width - weather_w) / 2)
 weather_y = int(y_top + ((y_bottom - y_top - weather_h) / 2) + 20)
 draw.text((weather_x, weather_y), weather,
-		  inky_display.BLACK, font=hanken_medium_font_20)
+          inky_display.BLACK, font=hanken_medium_font_20)
 
 # Display the completed name badge
 
