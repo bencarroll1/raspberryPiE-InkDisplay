@@ -75,15 +75,13 @@ def reflow_tweet(quote, width, font):
             line_length = word_length
             reflowed = reflowed[:-1] + "\n " + word
 
-    # reflowed = reflowed.rstrip() + '"'
-
     return reflowed
 
 
 # api-endpoint
 urlPrefix = 'https://DATABASENAME-default-rtdb.REGION.firebasedatabase.app/quotes/'
 # get random int between first quote id to last for endpoint
-quoteStr = str(random.randint(1, 14))
+quoteStr = str(random.randint(1, 21))
 print(quoteStr)
 urlQuoteSuffix = '/quote.json'
 urlAuthorSuffix = '/author.json'
@@ -135,7 +133,10 @@ try:
         'Song:': body["item"]["name"],
         'Artist:': artists
     })
-    nowPlaying = str(body["item"]["name"]), str(artists)
+    song, artist = str(body["item"]["name"]), str(artists)
+    
+    nowPlaying = song + ' - ' + artist
+    print(nowPlaying)
 
 except:
     print("Nothing is being played at the minute")
@@ -192,14 +193,14 @@ for y in range(y_bottom, inky_display.height):
 quote_w, quote_h = intuitive_font.getsize(str(quoter))
 quote_x = int((inky_display.width - quote_w) / 2)
 quote_y = 0 + padding
-draw.text((quote_x, quote_y), quoter,
+draw.text((0, quote_y), quoter,
           inky_display.BLACK, font=intuitive_font)
 
 # Calculate the positioning and draw the weather text
 
 author_w, author_h = intuitive_font.getsize(author)
 author_x = int((inky_display.width - author_w) / 2)
-author_y = quote_h + padding
+author_y = quote_h + padding +20
 draw.text((author_x, author_y), author,
           inky_display.YELLOW, font=intuitive_font)
 
