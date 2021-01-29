@@ -9,6 +9,7 @@ import requests
 import json
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+import textwrap3
 
 try:
     inky_display = auto(ask_user=True, verbose=True)
@@ -74,7 +75,7 @@ def reflow_quote(quote, width, font):
 urlPrefix = 'https://DATABASENAME-default-rtdb.REGION.firebasedatabase.app/quotes/'
 
 # get random int between first quote id to last for endpoint
-quoteStr = str(random.randint(1, 22))
+quoteStr = str(5) #str(random.randint(1, 23))
 print(quoteStr)
 urlQuoteSuffix = '/quote.json'
 urlAuthorSuffix = '/author.json'
@@ -122,22 +123,23 @@ try:
         if artists != "":
             artists += ", "
         artists += a["name"]
-    print({
-        'Song:': body["item"]["name"],
-        'Artist:': artists
-    })
     song, artist = str(body["item"]["name"]), str(artists)
 
-    nowPlaying = song + ' - ' + artist
+    #nowPlaying = song + ' - ' + artist
+    nowPlayingSong = song
+    nowPlayingArtist = artist
+    
     
     #if nowPlaying > inky_display.WIDTH:
 	#	Grand9K_Pixel = Grand9K_Pixel_14
     
-    print(nowPlaying)
+    print(nowPlayingSong)
+    print(nowPlayingArtist)
 
 except:
     print("Nothing is being played at the minute")
-    nowPlaying = 'Nothing Playing'
+    nowPlayingSong = 'Nothing Playing'
+    nowPlayingArtist = ''
 
 """
 WeatherAPI
@@ -171,30 +173,42 @@ y_bottom = y_top + int(inky_display.height * (5.0 / 10.0))
 # Calculate the positioning and draw the quote text
 quote_w, quote_h = Grand9K_Pixel.getsize(str(quoter))
 quote_x = int((inky_display.width - quote_w) / 2)
-quote_y = 0 + padding
+quote_y = 0 + padding - 6
+
 draw.text((0, quote_y), quoter,
           inky_display.BLACK, font=Grand9K_Pixel)
 
 # Calculate the positioning and draw the author text
 author_w, author_h = Grand9K_Pixel.getsize(author)
 author_x = int((inky_display.width - author_w) / 2)
-author_y = quote_h + padding + 20
+author_y = quote_h + padding + 18
+
 draw.text((author_x, author_y), author,
           inky_display.YELLOW, font=Grand9K_Pixel)
 
 # Calculate the positioning and draw the spotify song and artist text
-spotify_w, spotify_h = Grand9K_Pixel.getsize(str(nowPlaying))
-spotify_x = int((inky_display.width - spotify_w) / 2)
-spotify_y = author_h + padding + 50
-draw.text((spotify_x, spotify_y), str(nowPlaying),
+spotifySong_w, spotifySong_h = Grand9K_Pixel.getsize(str(nowPlayingSong))
+spotifySong_x = int((inky_display.width - spotifySong_w) / 2)
+spotifySong_y = author_h + padding + 42
+
+draw.text((spotifySong_x, spotifySong_y), str(nowPlayingSong),
           inky_display.BLACK, font=Grand9K_Pixel)
+          
+# Calculate the positioning and draw the spotify song and artist text
+spotifyArtist_w, spotifyArtist_h = Grand9K_Pixel.getsize(str(nowPlayingArtist))
+spotifyArtist_x = int((inky_display.width - spotifyArtist_w) / 2)
+spotifyArtist_y = spotifySong_h + padding + 61
+
+draw.text((spotifyArtist_x, spotifyArtist_y), str(nowPlayingArtist),
+          inky_display.YELLOW, font=Grand9K_Pixel_14)
 
 # Calculate the positioning and draw the weather text
 weather_w, weather_h = Grand9K_Pixel.getsize(str(weather))
 weather_x = int((inky_display.width - weather_w) / 2)
-weather_y = int(y_top + ((y_bottom - y_top - weather_h) / 2) + 20)
+weather_y = int(y_top + ((y_bottom - y_top - weather_h) / 2) + 22)
+
 draw.text((weather_x, weather_y), weather,
-          inky_display.BLACK, font=Grand9K_Pixel)
+          inky_display.BLACK, font=Grand9K_Pixel_14)
 
 # Display the completed name badge
 inky_display.set_image(img)
