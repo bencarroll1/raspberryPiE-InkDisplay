@@ -38,9 +38,9 @@ img = Image.new("P", inky_display.resolution)
 draw = ImageDraw.Draw(img)
 
 # Load the fonts
-Grand9K_Pixel = ImageFont.truetype("Grand9K Pixel.ttf", int(16 * scale_size))
+Grand9K_Pixel = ImageFont.truetype("Grand9K-Pixel.ttf", int(16 * scale_size))
 
-Grand9K_Pixel_14 = ImageFont.truetype("Grand9K Pixel.ttf", int(14 * scale_size))
+Grand9K_Pixel_14 = ImageFont.truetype("Grand9K-Pixel.ttf", int(14 * scale_size))
 
 """
 Firebase
