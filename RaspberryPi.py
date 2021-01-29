@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 import argparse
 import inkyphat
@@ -9,14 +9,13 @@ import requests
 import json
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-import textwrap3
 
 try:
     inky_display = auto(ask_user=True, verbose=True)
 except TypeError:
     raise TypeError("You need to update the Inky library to >= v1.1.0")
+    
 
-# inky_display.set_rotation(180)
 try:
     inky_display.set_border(inky_display.YELLOW)
 except NotImplementedError:
@@ -39,9 +38,9 @@ img = Image.new("P", inky_display.resolution)
 draw = ImageDraw.Draw(img)
 
 # Load the fonts
-Grand9K_Pixel = ImageFont.truetype("Grand9K-Pixel.ttf", int(16 * scale_size))
+Grand9K_Pixel = ImageFont.truetype("/home/pi/Desktop/inkyTesting/raspberryPiE-InkDisplay/Grand9K-Pixel.ttf", int(16 * scale_size))
 
-Grand9K_Pixel_14 = ImageFont.truetype("Grand9K-Pixel.ttf", int(14 * scale_size))
+Grand9K_Pixel_14 = ImageFont.truetype("/home/pi/Desktop/inkyTesting/raspberryPiE-InkDisplay/Grand9K-Pixel.ttf", int(14 * scale_size))
 
 """
 Firebase
@@ -125,14 +124,9 @@ try:
         artists += a["name"]
     song, artist = str(body["item"]["name"]), str(artists)
 
-    #nowPlaying = song + ' - ' + artist
     nowPlayingSong = song
     nowPlayingArtist = artist
-    
-    
-    #if nowPlaying > inky_display.WIDTH:
-	#	Grand9K_Pixel = Grand9K_Pixel_14
-    
+
     print(nowPlayingSong)
     print(nowPlayingArtist)
 
@@ -193,7 +187,7 @@ spotifySong_y = author_h + padding + 42
 
 draw.text((spotifySong_x, spotifySong_y), str(nowPlayingSong),
           inky_display.BLACK, font=Grand9K_Pixel)
-          
+
 # Calculate the positioning and draw the spotify song and artist text
 spotifyArtist_w, spotifyArtist_h = Grand9K_Pixel.getsize(str(nowPlayingArtist))
 spotifyArtist_x = int((inky_display.width - spotifyArtist_w) / 2)
