@@ -75,7 +75,7 @@ def reflow_quote(quote, width, font):
 urlPrefix = 'https://DATABASENAME-default-rtdb.REGION.firebasedatabase.app/quotes/'
 
 # get random int between first quote id to last for endpoint
-quoteStr = str(5) #str(random.randint(1, 23))
+quoteStr = str(random.randint(1, 24))
 print(quoteStr)
 urlQuoteSuffix = '/quote.json'
 urlAuthorSuffix = '/author.json'
