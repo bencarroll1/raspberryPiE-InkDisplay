@@ -3,8 +3,6 @@
 import argparse
 import inkyphat
 from PIL import Image, ImageFont, ImageDraw
-from font_hanken_grotesk import HankenGroteskBold, HankenGroteskMedium
-from font_intuitive import Intuitive
 from inky.auto import auto
 import random
 import requests
@@ -40,13 +38,9 @@ img = Image.new("P", inky_display.resolution)
 draw = ImageDraw.Draw(img)
 
 # Load the fonts
-intuitive_font = ImageFont.truetype(Intuitive, int(22 * scale_size))
-hanken_medium_font_20 = ImageFont.truetype(
-    HankenGroteskMedium, int(20 * scale_size))
-hanken_medium_font = ImageFont.truetype(
-    HankenGroteskMedium, int(22 * scale_size))
+Grand9K_Pixel = ImageFont.truetype("Grand9K Pixel.ttf", int(16 * scale_size))
 
-# Grab the name to be displayed
+Grand9K_Pixel_14 = ImageFont.truetype("Grand9K Pixel.ttf", int(14 * scale_size))
 
 """
 Firebase
@@ -78,8 +72,9 @@ def reflow_quote(quote, width, font):
 
 # api-endpoint
 urlPrefix = 'https://DATABASENAME-default-rtdb.REGION.firebasedatabase.app/quotes/'
+
 # get random int between first quote id to last for endpoint
-quoteStr = str(random.randint(1, 21))
+quoteStr = str(random.randint(1, 22))
 print(quoteStr)
 urlQuoteSuffix = '/quote.json'
 urlAuthorSuffix = '/author.json'
@@ -99,11 +94,11 @@ authorData = str(author.json())
 cityData = str(city.json())
 
 # print quote
-print('"' + quoteData + '"' + ' ~' + authorData + ' ('+cityData+')')
+print('"' + quoteData + '"' + ' ~' + authorData + ' (' + cityData +')')
 quote = '"' + quoteData + '"'
 author = '~' + authorData
 
-quoter = reflow_quote(quote, inky_display.WIDTH, font=intuitive_font)
+quoter = reflow_quote(quote, inky_display.WIDTH, font=Grand9K_Pixel)
 
 """
 Spotipy
@@ -134,6 +129,10 @@ try:
     song, artist = str(body["item"]["name"]), str(artists)
 
     nowPlaying = song + ' - ' + artist
+    
+    #if nowPlaying > inky_display.WIDTH:
+	#	Grand9K_Pixel = Grand9K_Pixel_14
+    
     print(nowPlaying)
 
 except:
@@ -169,48 +168,33 @@ weather = currentWeatherDegrees + 'C - ' + city + ', ' + country
 y_top = int(inky_display.height * (5.0 / 10.0))
 y_bottom = y_top + int(inky_display.height * (5.0 / 10.0))
 
-# Draw the red, white, and red strips
-for y in range(0, y_top):
-    for x in range(0, inky_display.width):
-        img.putpixel((x, y), inky_display.BLACK if inky_display.colour ==
-                     "black" else inky_display.WHITE)
-
-for y in range(y_top, y_bottom):
-    for x in range(0, inky_display.width):
-        img.putpixel((x, y), inky_display.WHITE)
-
-for y in range(y_bottom, inky_display.height):
-    for x in range(0, inky_display.width):
-        img.putpixel((x, y), inky_display.BLACK if inky_display.colour ==
-                     "black" else inky_display.WHITE)
-
 # Calculate the positioning and draw the quote text
-quote_w, quote_h = intuitive_font.getsize(str(quoter))
+quote_w, quote_h = Grand9K_Pixel.getsize(str(quoter))
 quote_x = int((inky_display.width - quote_w) / 2)
 quote_y = 0 + padding
 draw.text((0, quote_y), quoter,
-          inky_display.BLACK, font=intuitive_font)
+          inky_display.BLACK, font=Grand9K_Pixel)
 
-# Calculate the positioning and draw the weather text
-author_w, author_h = intuitive_font.getsize(author)
+# Calculate the positioning and draw the author text
+author_w, author_h = Grand9K_Pixel.getsize(author)
 author_x = int((inky_display.width - author_w) / 2)
 author_y = quote_h + padding + 20
 draw.text((author_x, author_y), author,
-          inky_display.YELLOW, font=intuitive_font)
+          inky_display.YELLOW, font=Grand9K_Pixel)
 
-# Calculate the positioning and draw the quote text
-spotify_w, spotify_h = hanken_medium_font.getsize(str(nowPlaying))
+# Calculate the positioning and draw the spotify song and artist text
+spotify_w, spotify_h = Grand9K_Pixel.getsize(str(nowPlaying))
 spotify_x = int((inky_display.width - spotify_w) / 2)
 spotify_y = author_h + padding + 50
 draw.text((spotify_x, spotify_y), str(nowPlaying),
-          inky_display.BLACK, font=hanken_medium_font)
+          inky_display.BLACK, font=Grand9K_Pixel)
 
-# Calculate the positioning and draw the quote author text
-weather_w, weather_h = hanken_medium_font_20.getsize(str(weather))
+# Calculate the positioning and draw the weather text
+weather_w, weather_h = Grand9K_Pixel.getsize(str(weather))
 weather_x = int((inky_display.width - weather_w) / 2)
 weather_y = int(y_top + ((y_bottom - y_top - weather_h) / 2) + 20)
 draw.text((weather_x, weather_y), weather,
-          inky_display.BLACK, font=hanken_medium_font_20)
+          inky_display.BLACK, font=Grand9K_Pixel)
 
 # Display the completed name badge
 inky_display.set_image(img)
