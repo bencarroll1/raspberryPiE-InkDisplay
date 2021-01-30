@@ -81,11 +81,11 @@ Once the Pi was set up, I shut it down and attached the Inky pHAT and rebooted i
 I then installed the necessary dependencies and and tried displaying some of the example Python scripts
 available for the Inky pHAT:
 
-![Inky pHAT calendar example](inky-cal.jpg)
+![Inky pHAT calendar example](images/inky-cal.jpg)
 
-![Inkt pHAT nametag terminal example](iPhatNameBadge.png)
+![Inkt pHAT nametag terminal example](images/iPhatNameBadge.png)
 
-![Inky pHAT nametag example](nametag.jpg)
+![Inky pHAT nametag example](images/nametag.jpg)
 
 I then got to work on retrieving data from the specified APIs. This was straightforward as
 I've retrieved data from APIs with Python before. 
@@ -94,12 +94,16 @@ Once I had that working, I began working on displaying the retrieved
 data on to the Inky pHAT. This was a bit trickier as I had to figure out how to 
 display the data within the dimensions of the screen, and how to format it correctly.
 
-![Inky pHAT simple display of retrieved API data ](simple-data.jpg)
+![Inky pHAT simple display of retrieved API data ](images/simple-data.jpg)
 
 Aftersome trial and error, I got the data displaying correctly within
 the dimensions of the Inky pHAT. I also removed any brackets or unneeded characters from
 the outputted display.
 
-![Inky pHAT with Spotify, WeatherAPI and Firebase Realtime database data retrieved and formatted. ](inky-display.jpg)
+![Inky pHAT with Spotify, WeatherAPI and Firebase Realtime database data retrieved and formatted. ](images/inky-display.jpg)
 
-I then wrote a bash script to run the Python script and used Crontab to make run the bash script every 3 minutes between 9 a.m. and 11:59 p.m.
+I then wrote a bash script to run the Python script and used Crontab to make run the bash script
+every 3 minutes between 9 a.m. and 11:59 p.m. This isn't real time data, especially for Spotify but 3
+minutes is roughly the length of a song, and I avoid burn in refreshing this infrequently.
+
+![Inky pHAT final](images/inky-pHAT-final.JPG)
