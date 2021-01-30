@@ -24,27 +24,46 @@ Finally, the project aims to display information about the weather in the user's
         ```
 4. Try `name-badge.py` example to make sure every thing is working as intended.
     1. ```python
-        python3 name-badge.py --type "auto" --colour "yellow" --name "Ben Carroll"
+       python3 name-badge.py --type "auto" --colour "yellow" --name "Ben Carroll"
         ```
 5. Clone this repo 
     1. ```console
        git clone https://github.com/bencarroll1/raspberryPiE-InkDisplay.git
         ```
 6. Enter the following to `RaspberryPi.py`:
-   1. WeatherAPI:
+   1. WeatherAPI ([Request an API key](https://www.weatherapi.com/docs/)):
       1. API key 
-    2. Spotify API:
+    2. Spotify API ([Create an app on Spotify for Developers](https://developer.spotify.com/documentation/)):
        1. client_id
        2. client_secret
        3. redirect_uri
-    3. Firebase
+    3. Firebase ([Docs here](https://firebase.google.com/docs/reference/rest/database)):
         1. database name
         2. database region
-7. Run batch scipt?
-8. Crontab -e on batch script to run as often as user wants?
-    1. Command here
-    2. Some information on [burn in](https://forums.pimoroni.com/t/my-inky-phat-clock-refresh-speed-question/6955) from the Pimoroni Forums.
-9. 
+7. In the file `ras.sh`, change the pathing to `raspberryPiE-InkDisplay` as appropriate.
+   1. My own are listed below, but yours may be different:
+    ```shell
+   #!/usr/bin/bash
+   cd /home/pi/Desktop/inkyTesting/raspberryPiE-InkDisplay
+   python3 ./RaspberryPi.py 
+   ```
+   2. Save and place on the Desktop
+8. Open a terminal and enter the following: 
+    ```shell
+   crontab -e 
+   ```
+   1. If its your first time using crontab, you will be prompted to select an editor. Choose Nano, the recommended one.
+   2. Scroll to the bottom of the file, and under the last commented line enter:
+    ```shell
+   */3 9-23 * * * /home/pi/Desktop/ras.sh >> /home/pi/Desktop/cron.log 2>&1 
+   ```
+   3. Press `ctrl` + `o` to save the changes you have made
+   4. Press `Enter`
+   5. Press `ctrl` + `x` to exit Nano
+    
+This will run the bash script every 3 minutes between 9 a.m. and 11:59 p.m.
+
+Some information on [burn in](https://forums.pimoroni.com/t/my-inky-phat-clock-refresh-speed-question/6955) from the Pimoroni Forums.
 
 ## Motivation
 I started this project as a means to try out using Raspberry Pi for the first time. 
@@ -64,6 +83,8 @@ available for the Inky pHAT:
 
 ![Inky pHAT calendar example](inky-cal.jpg)
 
+![Inkt pHAT nametag terminal example](iPhatNameBadge.png)
+
 ![Inky pHAT nametag example](nametag.jpg)
 
 I then got to work on retrieving data from the specified APIs. This was straightforward as
@@ -81,3 +102,4 @@ the outputted display.
 
 ![Inky pHAT with Spotify, WeatherAPI and Firebase Realtime database data retrieved and formatted. ](inky-display.jpg)
 
+I then wrote a bash script to run the Python script and used Crontab to make run the bash script every 3 minutes between 9 a.m. and 11:59 p.m.
