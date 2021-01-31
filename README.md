@@ -3,7 +3,7 @@
 ## Overview
 A project that uses a Raspberry Pi (Zero WH) to display information on to a Pimoroni Inky
 pHAT screen display. The information displayed is data retrieved from API endpoints: a quote stored 
-in a Firebase Realtime database, the song the users is currently listening to on Spotify, and
+in a Firebase Realtime database, the song the user is currently listening to on Spotify, and
 the weather in degrees celcius for the user's city. The Inky pHAT display will update periodically with
 new information.
 
