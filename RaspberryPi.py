@@ -101,7 +101,7 @@ if '"None"' in quote:
     author = '~' + 'Ramona Mazur Singer (' + quoteStr + ')'
 
 # print quote 
-print('"' + quote + '"' + ' ~' + author + ' (' + city +')')
+print('"' + quoteData + '"' + ' ~' + authorData + ' (' + cityData +')')
 
 quoter = reflow_quote(quote, inky_display.WIDTH, font=Grand9K_Pixel)
 
