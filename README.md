@@ -7,13 +7,12 @@ in a Firebase Realtime database, the song the users is currently listening to on
 the weather in degrees celcius for the user's city. The Inky pHAT display will update periodically with
 new information.
 
-## Aims
-This project aims to display a quote retrieved from an Firebase Realtime Database API endpoint. I set up the database as a means to store quotes, the name of the person who said it, and the city they're from.
-
-The projects also aims to display the name of the song and corresponding artist the user is currently listening to on Spotify.
-
-Finally, the project aims to display information about the weather in the user's city including the temperature in Celcius, a text-based description of the weather, and the city and country it corresponds to.
-
+## Motivation
+I started this project as a means to try out using Raspberry Pi for the first time. 
+I was curious to see how the Pi's work, as well as how it functions with the Inky pHAT display
+attached. To find out, I ended up creating this project that periodically makes a few HTTP GET requests to
+various API's and displays the retrieved information out on the display, and as a result functions
+as a peripheral display for a desk.
 
 ## Setup
 1. Install Raspbian to Raspberry Pi and complete Pi setup.
@@ -64,13 +63,6 @@ Finally, the project aims to display information about the weather in the user's
 This will run the bash script every 3 minutes between 9 a.m. and 11:59 p.m.
 
 Some information on [burn in](https://forums.pimoroni.com/t/my-inky-phat-clock-refresh-speed-question/6955) from the Pimoroni Forums.
-
-## Motivation
-I started this project as a means to try out using Raspberry Pi for the first time. 
-I was curious to see how the Pi's work, as well as how it functions with the Inky pHAT display
-attached. To find out, I ended up creating this project that periodically makes a few HTTP GET requests to
-various API's and displays the retrieved information out on the display, and as a result functions
-as a peripheral display for a desk.
 
 ## Results
 To begin with, I set up the Rasberry Pi Zero with Raspbian, as this was the recommended OS.
