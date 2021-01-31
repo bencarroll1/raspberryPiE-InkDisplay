@@ -74,7 +74,7 @@ def reflow_quote(quote, width, font):
 urlPrefix = 'https://DATABASENAME-default-rtdb.REGION.firebasedatabase.app/quotes/'
 
 # get random int between first quote id to last for endpoint
-quoteStr = str(random.randint(1, 24))
+quoteStr = str(random.randint(1, 30))
 print(quoteStr)
 urlQuoteSuffix = '/quote.json'
 urlAuthorSuffix = '/author.json'
@@ -93,10 +93,15 @@ quoteData = str(quote.json())
 authorData = str(author.json())
 cityData = str(city.json())
 
-# print quote
-print('"' + quoteData + '"' + ' ~' + authorData + ' (' + cityData +')')
 quote = '"' + quoteData + '"'
 author = '~' + authorData
+
+if '"None"' in quote:
+    quote = '"' + "In all sincerity, I couldn't retrieve a quote okayyy." + '"'
+    author = '~' + 'Ramona Mazur Singer (' + quoteStr + ')'
+
+# print quote 
+print('"' + quote + '"' + ' ~' + author + ' (' + city +')')
 
 quoter = reflow_quote(quote, inky_display.WIDTH, font=Grand9K_Pixel)
 
